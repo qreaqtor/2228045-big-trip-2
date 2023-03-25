@@ -5,24 +5,19 @@ const menuTemplate = () => (`<nav class="trip-controls__trip-tabs  trip-tabs">
 <a class="trip-tabs__btn" href="#">Stats</a>
 </nav>`)
 
-export default class MenuView
-{
-    getTemplate() 
-    {
+export default class MenuView {
+    getTemplate() {
       return menuTemplate;
     }
     
-    getElement() 
-    {
-      if (!this.element)
-      {
+    getElement() {
+      if (!this.element) {
         this.element = createElement(this.getTemplate());
       }
       return this.element;
     }
     
-    removeElement() 
-    {
+    removeElement() {
       this.element = null;
     }
 }
