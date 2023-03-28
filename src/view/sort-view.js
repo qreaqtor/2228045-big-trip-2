@@ -28,19 +28,21 @@ const sortTemplate = () => (`<form class="trip-events__trip-sort  trip-sort" act
 </form>`)
 
 export default class SortView {
-    getTemplate() {
-      return sortTemplate;
+  #element = null
+
+    get template() {
+      return sortTemplate();
     }
     
-    getElement() {
-      if (!this.element)
+    get element() {
+      if (!this.#element)
       {
-        this.element = createElement(this.getTemplate());
+        this.#element = createElement(this.template);
       }
-      return this.element;
+      return this.#element;
     }
     
     removeElement() {
-      this.element = null;
+      this.#element = null;
     }
 }
