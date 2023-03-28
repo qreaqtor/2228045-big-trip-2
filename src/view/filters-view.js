@@ -21,18 +21,20 @@ const filtersTemplate = () => (`<form class="trip-filters" action="#" method="ge
 )
 
 export default class FiltersView {
-    getTemplate() {
-      return filtersTemplate;
-    }
+  #element = null
+
+  get template() {
+    return filtersTemplate();
+  }
     
-    getElement() {
-      if (!this.element) {
-        this.element = createElement(this.getTemplate());
-      }
-      return this.element;
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
+    return this.#element;
+  }
     
-    removeElement() {
-      this.element = null;
-    }
+  removeElement() {
+    this.#element = null;
+  }
 }

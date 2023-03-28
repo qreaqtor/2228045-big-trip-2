@@ -6,18 +6,20 @@ const menuTemplate = () => (`<nav class="trip-controls__trip-tabs  trip-tabs">
 </nav>`)
 
 export default class MenuView {
-    getTemplate() {
-      return menuTemplate;
-    }
+  #element = null
+
+  get template() {
+    return menuTemplate();
+  }
     
-    getElement() {
-      if (!this.element) {
-        this.element = createElement(this.getTemplate());
-      }
-      return this.element;
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
+    return this.#element;
+  }
     
-    removeElement() {
-      this.element = null;
-    }
+  removeElement() {
+    this.#element = null;
+  }
 }
