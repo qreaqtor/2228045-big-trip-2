@@ -1,8 +1,9 @@
 import CreateFormView from "../view/create-form-view";
 import EditFormView from "../view/edit-form-view";
-import EventsView from "../view/events-view";
+import PointsListView from "../view/points-list-view";
 import RoutePointView from "../view/route-point-view";
 import SortView from "../view/sort-view";
+import EmptyPointsListView from "../view/empty-points-list-view";
 import { render } from "../render";
 
 export default class EventsPresenter {
@@ -14,7 +15,7 @@ export default class EventsPresenter {
     #offers = null;
 
     constructor(container) {
-        this.#eventsList = new EventsView();
+        this.#eventsList = new PointsListView();
         this.#container = container;
     }
     
@@ -23,15 +24,15 @@ export default class EventsPresenter {
         this.#boardPoints = [...this.#pointsModel.points];
         this.#destinations = [...this.#pointsModel.destinations];
         this.#offers = [...this.#pointsModel.offers];
-        render(new SortView(), this.#container);
-        render(this.#eventsList, this.#container);
-        //render(new EditFormView(this.boardPoints[0], this.destinations, this.offers), this.eventsList.Element);
-        for (const point of this.#boardPoints) {
-            //render(new RoutePointView(point, this.#destinations, this.#offers), this.#eventsList.element);
-            //render(new EditFormView(point, this.#destinations, this.#offers), this.#eventsList.element);
-            this.#renderPoint(point)
+        if(this.#boardPoints.length === 0) {
+            render(new EmptyPointsListView(), this.#container);
+        } else {
+            render(new SortView(), this.#container);
+            render(this.#eventsList, this.#container);
+            for (const point of this.#boardPoints) {
+                this.#renderPoint(point)
+            }
         }
-        //render(new CreateFormView(), this.container);
     }
 
     #renderPoint = (point) => {
