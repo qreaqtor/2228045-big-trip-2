@@ -4,7 +4,7 @@ import PointsListView from "../view/points-list-view";
 import RoutePointView from "../view/route-point-view";
 import SortView from "../view/sort-view";
 import EmptyPointsListView from "../view/empty-points-list-view";
-import { render } from "../render";
+import { render, replace } from "../framework/render";
 
 export default class EventsPresenter {
     #eventsList = null;
@@ -39,10 +39,10 @@ export default class EventsPresenter {
         const pointComponent = new RoutePointView(point, this.#destinations, this.#offers)
         const formEditComponent = new EditFormView(point, this.#destinations, this.#offers);
         const replacePointToEditForm = () => {
-            this.#eventsList.element.replaceChild(formEditComponent.element, pointComponent.element);
+            replace(formEditComponent, pointComponent);
         };
         const replaceEditFormToPoint = () => {
-            this.#eventsList.element.replaceChild(pointComponent.element, formEditComponent.element);
+            replace(pointComponent, formEditComponent);
         };
         const onEscKeyDown = (evt) => {
             if (evt.key === 'Escape' || evt.key === 'Esc') {
@@ -51,17 +51,15 @@ export default class EventsPresenter {
                 document.removeEventListener('keydown', onEscKeyDown);
             }
         };
-        pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+        pointComponent.setClickHandler(() => {
             replacePointToEditForm();
             document.addEventListener('keydown', onEscKeyDown);
         });
-        formEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', (evt) => {
-            evt.preventDefault();
+        formEditComponent.setClickHandler(() => {
             replaceEditFormToPoint();
             document.removeEventListener('keydown', onEscKeyDown);
         });
-        formEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-            evt.preventDefault();
+        formEditComponent.setSubmitHandler(() => {
             replaceEditFormToPoint();
             document.removeEventListener('keydown', onEscKeyDown);
         });

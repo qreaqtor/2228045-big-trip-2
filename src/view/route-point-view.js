@@ -1,5 +1,5 @@
-import { createElement } from "../render";
-import { humanizePointDueDate, duration, getDate, getTime } from "../utils";
+import { humanizePointDueDate, duration, getDate, getTime } from "../utils/date";
+import AbstractView from "../framework/view/abstract-view";
 
 const renderOffers = (allOffers, checkedOffers) => {
   let result = '';
@@ -54,13 +54,13 @@ const routePointTemlate = (point, destinations, offers) => {
   );
 };
 
-export default class RoutePointView {
+export default class RoutePointView extends AbstractView{
   #point = null
   #destinations = null
   #offers = null
-  #element = null
 
   constructor(point, destinations, offers) {
+    super()
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
@@ -69,15 +69,14 @@ export default class RoutePointView {
   get template() {
     return routePointTemlate(this.#point, this.#destinations, this.#offers);
   }
-    
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
+
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler)
   }
-    
-  removeElement() {
-    this.#element = null;
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.click();
   }
 }
