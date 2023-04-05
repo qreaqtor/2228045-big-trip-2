@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
-import { getRandomInteger, getRandomElement } from '../utils'
+import { getRandomInteger, getRandomElement } from '../utils/common'
 
-const COUNT = 0;
+const COUNT = 10;
 
 const TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 

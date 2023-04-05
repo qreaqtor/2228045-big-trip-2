@@ -1,7 +1,7 @@
 import FiltersView from "./view/filters-view";
 import MenuView from "./view/menu-view";
 import EventsPresenter from "./presenter/presenter";
-import { render } from "./render";
+import { render } from "./framework/render";
 import PointsModel from "./model/points-model";
 import { getPoints, getDestinations, getOffersByType } from "./mock/point";
 
