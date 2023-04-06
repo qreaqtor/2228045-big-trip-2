@@ -30,4 +30,10 @@ const getTime = (date) => dayjs(date).format(TIME_FORMAT);
 
 const getDateTime = (date) => dayjs(date).format(DATETIME_FORMAT);
 
-export { humanizePointDueDate, duration, getDate, getDateTime, getTime };
+const isPointDateInProgress = (dateFrom, dateTo) => dateFrom.isBefore(dayjs()) && dateTo.isAfter(dayjs());
+
+const isPointDateInPast = (dateTo) => dateTo.isBefore(dayjs());
+
+const isPointDateInFuture = (dateFrom) => dateFrom.isAfter(dayjs());
+
+export { humanizePointDueDate, duration, getDate, getDateTime, getTime, isPointDateInPast, isPointDateInFuture, isPointDateInProgress };
