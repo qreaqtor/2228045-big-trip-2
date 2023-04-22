@@ -11,7 +11,7 @@ const renderOffers = (allOffers, checkedOffers) => {
   return result;
 };
 
-const routePointTemlate = (point, destinations, offers) => {
+const routePointTemplate = (point, destinations, offers) => {
   const {basePrice, type, destinationId, isFavorite, dateFrom, dateTo, offerIds} = point;
   const allPointTypeOffers = offers.find((offer) => offer.type === type);
   const eventDuration = duration(dateFrom, dateTo);
@@ -67,16 +67,26 @@ export default class RoutePointView extends AbstractView{
   }
 
   get template() {
-    return routePointTemlate(this.#point, this.#destinations, this.#offers);
+    return routePointTemplate(this.#point, this.#destinations, this.#offers);
   }
 
-  setClickHandler = (callback) => {
+  setEditClickHandler = (callback) => {
     this._callback.click = callback;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler)
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   }
 
-  #clickHandler = (evt) => {
+  #editClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.click();
+  }
+
+  setFavouriteClickHandler = (callback) => {
+    this._callback.favouriteClick = callback;
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favouriteClickHandler);
+  }
+
+  #favouriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favouriteClick();
   }
 }

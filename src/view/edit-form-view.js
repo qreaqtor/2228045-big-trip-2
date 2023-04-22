@@ -147,7 +147,7 @@ export default class EditFormView extends AbstractView {
     return editFormTemplate(this.#point, this.#destinations, this.#offers);
   }
 
-  setClickHandler = (callback) => {
+  setPreviewClickHandler = (callback) => {
     this._callback.click = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandler);
   }
@@ -158,12 +158,12 @@ export default class EditFormView extends AbstractView {
   }
 
   setSubmitHandler = (callback) => {
-    this._callback.click = callback;
+    this._callback.submit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#submitHandler);
   }
 
   #submitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.click();
+    this._callback.submit(this.#point);
   }
 }
