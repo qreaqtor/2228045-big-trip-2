@@ -1,6 +1,6 @@
 import RoutePointView from "../view/route-point-view";
 import EditFormView from "../view/edit-form-view";
-import { render, replace } from "../framework/render";
+import { remove, render, replace } from "../framework/render";
 
 const Mode = {
     DEFAULT: 'default',
@@ -40,7 +40,7 @@ export default class PointPresenter {
         this.#pointComponent.setFavouriteClickHandler(this.#handlefavouriteClick);
         this.#pointComponent.setEditClickHandler(this.#replacePointToEditForm);
         this.#formEditComponent.setPreviewClickHandler(this.#replaceEditFormToPoint);
-        this.#formEditComponent.setSubmitHandler(this.#handleFormSubmit);
+        this.#formEditComponent.setSubmitClickHandler(this.#handleFormSubmit);
 
         if(this.#prevPointComponent === null || this.#prevFormEditComponent === null) {
             render(this.#pointComponent, this.#pointsList.element);
@@ -49,10 +49,15 @@ export default class PointPresenter {
         }
     }
 
-    resetViewToDefault() {
+    resetViewToDefault = () => {
         if(this.#mode === Mode.EDITING) {
             this.#replaceEditFormToPoint();
         }
+    }
+
+    destroy = () => {
+        remove(this.#pointComponent);
+        remove(this.#formEditComponent);
     }
 
     #onEscKeyDown = (evt) => {
