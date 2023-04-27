@@ -157,9 +157,9 @@ export default class EditFormView extends AbstractView {
     this._callback.click();
   }
 
-  setSubmitHandler = (callback) => {
+  setSubmitClickHandler = (callback) => {
     this._callback.submit = callback;
-    this.element.querySelector('form').addEventListener('submit', this.#submitHandler);
+    this.element.querySelector('.event__save-btn').addEventListener('submit', this.#submitHandler);
   }
 
   #submitHandler = (evt) => {
