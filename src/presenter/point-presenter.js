@@ -14,8 +14,6 @@ export default class PointPresenter {
     #point = null;
     #destinations = null;
     #offers = null;
-    #prevPointComponent = null;
-    #prevFormEditComponent = null;
     #mode = Mode.DEFAULT;
 
     #changeData = null;
@@ -30,8 +28,8 @@ export default class PointPresenter {
     }
 
     init(point) {
-        this.#prevPointComponent = this.#pointComponent;
-        this.#prevFormEditComponent = this.#formEditComponent;
+        const prevPointComponent = this.#pointComponent;
+        const prevFormEditComponent = this.#formEditComponent;
         this.#point = point;
 
         this.#pointComponent = new RoutePointView(this.#point, this.#destinations, this.#offers);
@@ -39,18 +37,29 @@ export default class PointPresenter {
 
         this.#pointComponent.setFavouriteClickHandler(this.#handlefavouriteClick);
         this.#pointComponent.setEditClickHandler(this.#replacePointToEditForm);
-        this.#formEditComponent.setPreviewClickHandler(this.#replaceEditFormToPoint);
+        this.#formEditComponent.setPreviewClickHandler(this.resetViewToDefault);
         this.#formEditComponent.setSubmitClickHandler(this.#handleFormSubmit);
 
-        if(this.#prevPointComponent === null || this.#prevFormEditComponent === null) {
+        if(prevPointComponent === null || prevFormEditComponent === null) {
             render(this.#pointComponent, this.#pointsList.element);
-        } else {
-            replace(this.#pointComponent, this.#prevPointComponent);
+            return;
         }
+        switch (this.#mode) {
+            case Mode.DEFAULT:
+              replace(this.#pointComponent, prevPointComponent);
+              break;
+            case Mode.EDITING:
+              replace(this.#formEditComponent, prevFormEditComponent);
+              break;
+        }
+
+        remove(prevPointComponent);
+        remove(prevFormEditComponent);
     }
 
     resetViewToDefault = () => {
         if(this.#mode === Mode.EDITING) {
+            this.#formEditComponent.reset(this.#point);
             this.#replaceEditFormToPoint();
         }
     }
@@ -63,7 +72,7 @@ export default class PointPresenter {
     #onEscKeyDown = (evt) => {
         if (evt.key === 'Escape' || evt.key === 'Esc') {
             evt.preventDefault();
-            this.#replaceEditFormToPoint();
+            this.resetViewToDefault();
         }
     };
 

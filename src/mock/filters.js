@@ -1,4 +1,4 @@
-import { filter } from "../utils/filter";
+import { filter } from '../utils/filter';
 
 export const generateFilters = (points) => Object.entries(filter).map(
   ([filterName, filterPoints]) => ({
