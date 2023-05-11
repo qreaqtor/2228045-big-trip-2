@@ -5,8 +5,7 @@ import EmptyPointsListView from "../view/empty-points-list-view";
 import PointPresenter from "./point-presenter";
 import { render } from "../framework/render";
 import { updateItem } from "../utils/common";
-import { SortType } from "../const";
-import { SortComparers } from "../utils/sorts";
+import { SortComparers, SortType } from "../utils/sorts";
 
 export default class EventsPresenter {
     #pointsList = null;

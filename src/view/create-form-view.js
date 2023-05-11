@@ -1,4 +1,4 @@
-import AbstractView from "../framework/view/abstract-view"
+import AbstractView from '../framework/view/abstract-view';
 
 const createFormTemplate = () => (`<li class="trip-events__item">
 <form class="event event--edit" action="#" method="post">
@@ -146,4 +146,4 @@ export default class CreateFormView extends AbstractView {
   get template() {
     return createFormTemplate();
   }
-} 
+}

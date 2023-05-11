@@ -1,5 +1,5 @@
-import AbstractView from "../framework/view/abstract-view";
-import { SortType } from "../const";
+import AbstractView from '../framework/view/abstract-view';
+import { SortType } from '../utils/sorts';
 
 const sortTemplate = () => (`<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
 <div class="trip-sort__item  trip-sort__item--${SortType.DAY}">
