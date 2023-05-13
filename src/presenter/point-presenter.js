@@ -1,11 +1,11 @@
-import RoutePointView from "../view/route-point-view";
-import EditFormView from "../view/edit-form-view";
-import { remove, render, replace } from "../framework/render";
+import RoutePointView from '../view/route-point-view';
+import EditFormView from '../view/edit-form-view';
+import { remove, render, replace } from '../framework/render';
 
 const Mode = {
     DEFAULT: 'default',
     EDITING: 'editing',
-  };
+};
 
 export default class PointPresenter {
     #pointComponent = null;
