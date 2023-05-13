@@ -17,11 +17,11 @@ const duration = (dateFrom, dateTo) => {
   const restHours = Math.floor((difference - days * MINUTES_PER_DAY_COUNT) / MINUTES_PER_HOUR_COUNT);
   const restMinutes = difference - (days * MINUTES_PER_DAY_COUNT + restHours * MINUTES_PER_HOUR_COUNT);
 
-  const daysOutput = (days) ? `${days}D` : '';
-  const hoursOutput = (restHours) ? `${restHours}H` : '';
-  const minutesOutput = (restMinutes) ? `${restMinutes}M` : '';
+  const daysOutput = (days) ? `${days}D `.padStart(4, '0') : '';
+  const hoursOutput = (days || restHours) ? `${restHours}H `.padStart(4, '0') : '';
+  const minutesOutput = (days || restMinutes) ? `${restMinutes}M`.padStart(3, '0') : '';
 
-  return `${daysOutput} ${hoursOutput} ${minutesOutput}`;
+  return `${daysOutput}${hoursOutput}${minutesOutput}`;
 };
 
 const getDate = (date) => dayjs(date).format(DATE_FORMAT);

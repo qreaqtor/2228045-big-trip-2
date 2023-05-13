@@ -27,15 +27,15 @@ const ElementsCount = {
 };
 
 const PictureNumber = {
-    MIN: 0,
-    MAX: 100
+  MIN: 0,
+  MAX: 100
 };
-  
+
 const Price = {
-    MIN: 10,
-    MAX: 10000
+  MIN: 10,
+  MAX: 10000
 };
-  
+
 const generateDescription = () => {
   let description = '';
   for (let i = 0; i < getRandomInteger(ElementsCount.MIN, ElementsCount.MAX); i++) {
@@ -48,7 +48,7 @@ const generatePicture = () => ({
   src: `http://picsum.photos/248/152?r=${getRandomInteger(PictureNumber.MIN, PictureNumber.MAX)}`,
   description: generateDescription(),
 });
-  
+
 const generateDestination = (id) => ({
   id,
   description: generateDescription(),
@@ -86,7 +86,7 @@ const generatePoint = () => {
     isFavorite: Boolean(getRandomInteger()),
     offerIds: Array.from({length: getRandomInteger(0, allOfferIdsByTypePoint.length)}).map(() => allOfferIdsByTypePoint[getRandomInteger(0, allOfferIdsByTypePoint.length - 1)]),
     type: offersByTypePoint.type,
-  }
+  };
 };
 
 const getPoints = () => Array.from({length: COUNT}).map(() => generatePoint());

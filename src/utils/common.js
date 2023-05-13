@@ -26,12 +26,12 @@ const updateItem = (items, update) => {
 };
 
 const toUpperCaseFirstLetter = (value) => {
-  if (value === null || value === "") {
+  if (value === null || value === '') {
     return value;
   }
   const firstLetter = value[0].toUpperCase();
   const otherLetters = value.slice(1);
   return firstLetter + otherLetters;
-}
+};
 
 export { getRandomInteger, updateItem, getRandomElement, toUpperCaseFirstLetter };
