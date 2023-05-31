@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 const MINUTES_PER_HOUR_COUNT = 60;
 const MINUTES_PER_DAY_COUNT = 1440;
-const TIME_FORMAT = 'hh:mm';
+const TIME_FORMAT = 'HH:mm';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const DATETIME_FORMAT = 'DD/MM/YY hh:mm';
 
@@ -30,10 +30,10 @@ const getTime = (date) => dayjs(date).format(TIME_FORMAT);
 
 const getDateTime = (date) => dayjs(date).format(DATETIME_FORMAT);
 
-const isPointDateInProgress = (dateFrom, dateTo) => dateFrom.isBefore(dayjs()) && dateTo.isAfter(dayjs());
+const isPointDateInProgress = (dateFrom, dateTo) => dayjs().diff(dateFrom, 'minute') > 0 && dayjs().diff(dateTo, 'minute') < 0;
 
-const isPointDateInPast = (dateTo) => dateTo.isBefore(dayjs());
+const isPointDateInPast = (dateTo) => dayjs().diff(dateTo, 'minute') > 0;
 
-const isPointDateInFuture = (dateFrom) => dateFrom.isAfter(dayjs());
+const isPointDateInFuture = (dateFrom) => dayjs().diff(dateFrom, 'minute') <= 0;
 
 export { humanizePointDueDate, duration, getDate, getDateTime, getTime, isPointDateInPast, isPointDateInFuture, isPointDateInProgress };
