@@ -81,10 +81,10 @@ const generatePoint = () => {
     basePrice: getRandomInteger(Price.MIN, Price.MAX),
     dateFrom: dayjs().add(getRandomInteger(-3, 0), 'day').add(getRandomInteger(-2, 0), 'hour').add(getRandomInteger(-59, 0), 'minute'),
     dateTo: dayjs().add(getRandomInteger(0, 3), 'day').add(getRandomInteger(0, 2), 'hour').add(getRandomInteger(0, 59), 'minute'),
-    destinationId: getRandomElement(destinations).id,
+    destination: getRandomElement(destinations).id,
     id: nanoid(),
     isFavorite: Boolean(getRandomInteger()),
-    offerIds: Array.from({length: getRandomInteger(0, allOfferIdsByTypePoint.length)}).map(() => allOfferIdsByTypePoint[getRandomInteger(0, allOfferIdsByTypePoint.length - 1)]),
+    offer: Array.from({length: getRandomInteger(0, allOfferIdsByTypePoint.length)}).map(() => allOfferIdsByTypePoint[getRandomInteger(0, allOfferIdsByTypePoint.length - 1)]),
     type: offersByTypePoint.type,
   };
 };

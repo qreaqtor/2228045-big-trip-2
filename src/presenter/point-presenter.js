@@ -11,24 +11,28 @@ const Mode = {
 export default class PointPresenter {
   #pointComponent = null;
   #formEditComponent = null;
-  #pointsList = null;
+  #container = null;
   #point = null;
   #destinations = null;
   #offers = null;
   #mode = Mode.DEFAULT;
+  #destinationsModel = null;
+  #offersModel = null;
 
   #changeData = null;
   #changeMode = null;
 
-  constructor(pointsList, pointsModel, changeData, changeMode) {
-    this.#pointsList = pointsList;
+  constructor({pointsListContainer, changeData, changeMode, destinationsModel, offersModel}) {
+    this.#container = pointsListContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
-    this.#destinations = [...pointsModel.destinations];
-    this.#offers = [...pointsModel.offers];
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
   }
 
   init(point) {
+    this.#destinations = [...this.#destinationsModel.destinations];
+    this.#offers = [...this.#offersModel.offers];
     const prevPointComponent = this.#pointComponent;
     const prevFormEditComponent = this.#formEditComponent;
     this.#point = point;
@@ -45,7 +49,7 @@ export default class PointPresenter {
     this.#formEditComponent.setSubmitClickHandler(this.#handleFormSubmit);
     this.#formEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
     if(prevPointComponent === null || prevFormEditComponent === null) {
-      render(this.#pointComponent, this.#pointsList.element);
+      render(this.#pointComponent, this.#container.element);
       return;
     }
     switch (this.#mode) {
