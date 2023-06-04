@@ -8,6 +8,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT'
 };
 
 const FilterType = {
@@ -48,6 +49,34 @@ const NoPointsTextType = {
   [FilterType.FUTURE]: 'There are no future events now',
 };
 
-const PointTypes = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const PointTypes = {
+  TAXI: 'taxi',
+  BUS: 'bus',
+  TRAIN: 'train',
+  SHIP: 'ship',
+  DRIVE: 'drive',
+  FLIGHT: 'flight',
+  CHECK_IN: 'check-in',
+  SIGHTSEEING: 'sightseeing',
+  RESTAURANT: 'restaurant'
+};
 
-export { UserAction, UpdateType, FilterType, SortType, NoPointsTextType, DisabledSortTypes, StartCheckedSortType, SortTypeDescriptions, FilterTypeDescriptions, PointTypes };
+const PointTypesDescriptions = {
+  [PointTypes.TAXI]: 'Taxi',
+  [PointTypes.BUS]: 'Bus',
+  [PointTypes.TRAIN]: 'Train',
+  [PointTypes.SHIP]: 'Ship',
+  [PointTypes.DRIVE]: 'Drive',
+  [PointTypes.FLIGHT]: 'Flight',
+  [PointTypes.CHECK_IN]: 'Check-in',
+  [PointTypes.SIGHTSEEING]: 'Sightseeing',
+  [PointTypes.RESTAURANT]: 'Restaurant'
+};
+
+const ApiServiceResponseMethod = {
+  GET: 'GET',
+  PUT: 'PUT'
+};
+
+export { UserAction, UpdateType, FilterType, SortType, NoPointsTextType, DisabledSortTypes, StartCheckedSortType, 
+  SortTypeDescriptions, FilterTypeDescriptions, PointTypes, PointTypesDescriptions, ApiServiceResponseMethod };

@@ -1,6 +1,7 @@
 import PointsListView from '../view/points-list-view';
 import SortView from '../view/sort-view';
 import EmptyPointsListView from '../view/empty-points-list-view';
+import LoadingView from '../view/loading-view';
 import PointPresenter from './point-presenter';
 import { render, RenderPosition, remove } from '../framework/render';
 import { SortComparers } from '../utils/sorts';
@@ -12,20 +13,39 @@ export default class EventsPresenter {
   #container = null;
   #pointsModel = null;
   #filterModel = null;
+  #destinationsModel = null;
+  #offersModel = null;
   #emptyPointsListComponent = null;
   #sortComponent = null;
-  #pointsListComponent = new PointsListView();
-  #pointsPresenters = new Map();
+  #pointsListComponent = null;
+  #loadingComponent = null;
+  #pointsPresenters = null;
   #pointNewPresenter = null;
   #currentSortType = null;
-  #filterType = FilterType.EVERYTHING;
+  #filterType = null;
+  #isLoading = null;
 
-  constructor(container, pointsModel, filterModel) {
+  constructor({container, pointsModel, filterModel, destinationsModel, offersModel}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
-    this.#pointNewPresenter = new PointNewPresenter(this.#pointsListComponent.element, this.#handleViewAction, this.#pointsModel);
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
+    this.#pointsPresenters = new Map();
+    this.#pointsListComponent = new PointsListView();
+    this.#loadingComponent = new LoadingView();
+    this.#pointNewPresenter = new PointNewPresenter({
+      pointListContainer: this.#pointsListComponent.element, 
+      changeData: this.#handleViewAction, 
+      pointsModel: this.#pointsModel,
+      destinationsModel: this.#destinationsModel,
+      offersModel: this.#offersModel
+    });
     this.#currentSortType = StartCheckedSortType;
+    this.#filterType = FilterType.EVERYTHING;
+    this.#isLoading = true;
+    this.#destinationsModel.addObserver(this.#handleModelEvent);
+    this.#offersModel.addObserver(this.#handleModelEvent);
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -75,10 +95,20 @@ export default class EventsPresenter {
 
   #renderPoints = (points) => {
     for (const point of points) {
-      const pointPresenter = new PointPresenter(this.#pointsListComponent, this.#pointsModel, this.#handleViewAction, this.#hideEditForms);
+      const pointPresenter = new PointPresenter({
+        pointsListContainer: this.#pointsListComponent,
+        changeData: this.#handleViewAction, 
+        changeMode: this.#hideEditForms,
+        destinationsModel: this.#destinationsModel,
+        offersModel: this.#offersModel
+      });
       pointPresenter.init(point);
       this.#pointsPresenters.set(point.id, pointPresenter);
     }
+  };
+
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
   };
 
   #handleModelEvent = (updateType, data) => {
@@ -92,6 +122,12 @@ export default class EventsPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearPoints({resetSortType: true});
+        this.#renderBoard();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        remove(this.#emptyPointsListComponent);
         this.#renderBoard();
         break;
     }
@@ -112,6 +148,10 @@ export default class EventsPresenter {
   };
 
   #renderBoard = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     const points = this.points;
     const pointCount = points.length;
     if (pointCount === 0) {
@@ -127,6 +167,7 @@ export default class EventsPresenter {
     this.#pointsPresenters.forEach((presenter) => presenter.destroy());
     this.#pointsPresenters.clear();
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     if (this.#emptyPointsListComponent) {
       remove(this.#emptyPointsListComponent);
     }

@@ -19,7 +19,7 @@ export default class HeaderPresenter {
   #newPointButtonComponent = null;
   #menuComponent = null;
 
-  constructor(container, btnClick, pointsModel, filtersModel) {
+  constructor({container, btnClick, pointsModel, filtersModel}) {
     this.#filterContainer = container.querySelector('.trip-controls__filters');
     this.#btnContainer = container;
     this.#menuContainer = container.querySelector('.trip-controls__navigation');
