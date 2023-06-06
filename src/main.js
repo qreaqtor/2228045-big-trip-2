@@ -8,7 +8,7 @@ import PointsApiService from './api-service/points-api-service';
 import DestinationsApiService from './api-service/destinations-api-service';
 import OffersApiService from './api-service/offers-api-service';
 
-const AUTHORIZATION = 'Basic hGfqdqd01tqudb30';
+const AUTHORIZATION = 'Basic hGfqdqd01tqudb33';
 const END_POINT = 'https://18.ecmascript.pages.academy/big-trip';
 
 const siteHeaderElement = document.querySelector('.trip-main');
@@ -26,14 +26,18 @@ const eventsPresenter = new EventsPresenter({
   destinationsModel: destinationsModel,
   offersModel: offersModel
 });
-eventsPresenter.init();
 
 const headerPresenter = new HeaderPresenter({
   container: siteHeaderElement,
-  btnClick: eventsPresenter.openCreatePointForm,
+  newEventClick: eventsPresenter.openCreatePointForm,
+  newEventCancel: eventsPresenter.showNoPointsDescription,
   pointsModel: pointsModel,
-  filtersModel: filtersModel
+  filtersModel: filtersModel,
+  destinationsModel: destinationsModel,
+  offersModel: offersModel
 });
+
+eventsPresenter.init(headerPresenter.clearHeader);
 headerPresenter.init();
 
 offersModel.init().finally(() => {

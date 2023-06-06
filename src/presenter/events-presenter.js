@@ -9,6 +9,7 @@ import { filter } from '../utils/filter.js';
 import { UpdateType, UserAction, SortType, FilterType, StartCheckedSortType, LimitTime } from '../consts.js';
 import PointNewPresenter from './point-new-presenter.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import NoAdditionalInfoView from '../view/no-additional-info-view';
 
 export default class EventsPresenter {
   #container = null;
@@ -16,16 +17,23 @@ export default class EventsPresenter {
   #filterModel = null;
   #destinationsModel = null;
   #offersModel = null;
+
   #emptyPointsListComponent = null;
   #sortComponent = null;
   #pointsListComponent = null;
   #loadingComponent = null;
+  #noAdditionalInfoComponent = null;
+
   #pointsPresenters = null;
+
   #pointNewPresenter = null;
   #currentSortType = null;
+
   #filterType = null;
   #isLoading = null;
   #uiBlocker = null;
+
+  #clearHeader = null;
 
   constructor({container, pointsModel, filterModel, destinationsModel, offersModel}) {
     this.#container = container;
@@ -36,6 +44,7 @@ export default class EventsPresenter {
     this.#pointsPresenters = new Map();
     this.#pointsListComponent = new PointsListView();
     this.#loadingComponent = new LoadingView();
+    this.#noAdditionalInfoComponent = new NoAdditionalInfoView();
     this.#pointNewPresenter = new PointNewPresenter({
       pointListContainer: this.#pointsListComponent.element,
       changeData: this.#handleViewAction,
@@ -61,7 +70,8 @@ export default class EventsPresenter {
     return filteredPoints;
   }
 
-  init() {
+  init(clearHeader) {
+    this.#clearHeader = clearHeader;
     this.#renderBoard();
   }
 
@@ -70,8 +80,16 @@ export default class EventsPresenter {
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     if (this.#emptyPointsListComponent) {
       render(this.#pointsListComponent, this.#container);
+      remove(this.#emptyPointsListComponent);
     }
     this.#pointNewPresenter.init(callback);
+  };
+
+  showNoPointsDescription = () => {
+    if(this.#pointsModel.points.length !== 0) {
+      return;
+    }
+    this.#renderNoPointsView();
   };
 
   #handleViewAction = async (actionType, updateType, update) => {
@@ -108,6 +126,10 @@ export default class EventsPresenter {
   #renderNoPointsView = () => {
     this.#emptyPointsListComponent = new EmptyPointsListView(this.#filterType);
     render(this.#emptyPointsListComponent, this.#container, RenderPosition.AFTERBEGIN);
+  };
+
+  #renderNoAdditionalInfo = () => {
+    render(this.#noAdditionalInfoComponent, this.#container, RenderPosition.AFTERBEGIN);
   };
 
   #renderSortView = () => {
@@ -173,6 +195,12 @@ export default class EventsPresenter {
   #renderBoard = () => {
     if (this.#isLoading) {
       this.#renderLoading();
+      return;
+    }
+    if (this.#offersModel.offers === undefined || this.#destinationsModel.destinations === undefined || this.#pointsModel.points === undefined ||
+        this.#offersModel.offers.length === 0 || this.#destinationsModel.destinations.length === 0) {
+      this.#renderNoAdditionalInfo();
+      this.#clearHeader();
       return;
     }
     const points = this.points;

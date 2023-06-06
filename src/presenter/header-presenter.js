@@ -1,33 +1,46 @@
 import { render, replace, remove } from '../framework/render.js';
 import FiltersView from '../view/filters-view.js';
 import { filter } from '../utils/filter.js';
-import { FilterType, UpdateType, FilterTypeDescriptions } from '../consts.js';
+import { FilterType, UpdateType, FilterTypeDescriptions, SortType } from '../consts.js';
 import NewPointButtonView from '../view/new-point-button-view.js';
 import MenuView from '../view/menu-view.js';
+import InfoView from '../view/info-view.js';
+import { SortComparers } from '../utils/sorts.js';
 
 export default class HeaderPresenter {
   #filterContainer = null;
   #btnContainer = null;
   #menuContainer = null;
+  #infoContainer = null;
 
   #openCreatePointForm = null;
+  #renderEmptyPointsList = null;
 
   #filtersModel = null;
   #pointsModel = null;
+  #destinationsModel = null;
+  #offersModel = null;
 
-  #filterComponent = null;
+  #filtersComponent = null;
   #newPointButtonComponent = null;
   #menuComponent = null;
+  #infoComponent = null;
 
-  constructor({container, btnClick, pointsModel, filtersModel}) {
+  constructor({container, newEventClick, newEventCancel, pointsModel, filtersModel, destinationsModel, offersModel}) {
     this.#btnContainer = container;
     this.#filterContainer = container.querySelector('.trip-controls__filters');
     this.#menuContainer = container.querySelector('.trip-controls__navigation');
-    this.#openCreatePointForm = btnClick;
+    this.#infoContainer = container.querySelector('.trip-main__trip-info');
+    this.#openCreatePointForm = newEventClick;
+    this.#renderEmptyPointsList = newEventCancel;
     this.#filtersModel = filtersModel;
     this.#pointsModel = pointsModel;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filtersModel.addObserver(this.#handleModelEvent);
+    this.#destinationsModel.addObserver(this.#handleModelEvent);
+    this.#offersModel.addObserver(this.#handleModelEvent);
   }
 
   get filters() {
@@ -41,22 +54,44 @@ export default class HeaderPresenter {
   }
 
   init = () => {
-    if(this.#newPointButtonComponent === null) {
-      this.#renderButton();
-    }
     if(this.#menuComponent === null) {
       this.#renderMenu();
     }
+    if(this.#newPointButtonComponent === null) {
+      this.#renderButton();
+    }
+    this.#renderFilters();
+    this.#renderInfo();
+  };
+
+  clearHeader = () => {
+    this.#newPointButtonComponent.element.disabled = true;
+    remove(this.#infoComponent);
+    remove(this.#filtersComponent);
+  };
+
+  #renderFilters = () => {
     const filters = this.filters;
-    const prevFilterComponent = this.#filterComponent;
-    this.#filterComponent = new FiltersView(filters, this.#filtersModel.filter);
-    this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
+    const prevFilterComponent = this.#filtersComponent;
+    this.#filtersComponent = new FiltersView(filters, this.#filtersModel.filter);
+    this.#filtersComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
     if (prevFilterComponent === null) {
-      render(this.#filterComponent, this.#filterContainer);
+      render(this.#filtersComponent, this.#filterContainer);
       return;
     }
-    replace(this.#filterComponent, prevFilterComponent);
+    replace(this.#filtersComponent, prevFilterComponent);
     remove(prevFilterComponent);
+  };
+
+  #renderInfo = () => {
+    if(this.#infoComponent !== null) {
+      remove(this.#infoComponent);
+    }
+    const sortPoints = [...this.#pointsModel.points].sort(SortComparers[SortType.DAY]);
+    const destinations = [...this.#destinationsModel.destinations];
+    const offers = [...this.#offersModel.offers];
+    this.#infoComponent = new InfoView(sortPoints, destinations, offers);
+    render(this.#infoComponent, this.#infoContainer);
   };
 
   #renderMenu = () => {
@@ -68,13 +103,11 @@ export default class HeaderPresenter {
     this.#newPointButtonComponent = new NewPointButtonView();
     render(this.#newPointButtonComponent, this.#btnContainer);
     this.#newPointButtonComponent.setClickHandler(this.#handleNewPointButtonClick);
-    // if (this.#offersModel.offers.length === 0 || this.#destinationsModel.destinations.length === 0) {
-    //   this.#newPointButtonComponent.element.disabled = true;
-    // }
   };
 
   #handleNewPointFormClose = () => {
     this.#newPointButtonComponent.element.disabled = false;
+    this.#renderEmptyPointsList();
   };
 
   #handleNewPointButtonClick = () => {
