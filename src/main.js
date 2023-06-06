@@ -20,24 +20,24 @@ const offersModel = new OffersModel(new OffersApiService(END_POINT, AUTHORIZATIO
 const filtersModel = new FilterModel();
 
 const eventsPresenter = new EventsPresenter({
-    container: siteMainElement.querySelector('.trip-events'),
-    pointsModel: pointsModel, 
-    filterModel: filtersModel,
-    destinationsModel: destinationsModel,
-    offersModel: offersModel
+  container: siteMainElement.querySelector('.trip-events'),
+  pointsModel: pointsModel,
+  filterModel: filtersModel,
+  destinationsModel: destinationsModel,
+  offersModel: offersModel
 });
 eventsPresenter.init();
 
 const headerPresenter = new HeaderPresenter({
-    container: siteHeaderElement, 
-    btnClick: eventsPresenter.openCreatePointForm,
-    pointsModel: pointsModel, 
-    filtersModel: filtersModel
+  container: siteHeaderElement,
+  btnClick: eventsPresenter.openCreatePointForm,
+  pointsModel: pointsModel,
+  filtersModel: filtersModel
 });
 headerPresenter.init();
 
 offersModel.init().finally(() => {
-    destinationsModel.init().finally(() => {
-      pointsModel.init();
-    });
+  destinationsModel.init().finally(() => {
+    pointsModel.init();
+  });
 });

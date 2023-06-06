@@ -20,8 +20,8 @@ export default class HeaderPresenter {
   #menuComponent = null;
 
   constructor({container, btnClick, pointsModel, filtersModel}) {
-    this.#filterContainer = container.querySelector('.trip-controls__filters');
     this.#btnContainer = container;
+    this.#filterContainer = container.querySelector('.trip-controls__filters');
     this.#menuContainer = container.querySelector('.trip-controls__navigation');
     this.#openCreatePointForm = btnClick;
     this.#filtersModel = filtersModel;
@@ -68,6 +68,9 @@ export default class HeaderPresenter {
     this.#newPointButtonComponent = new NewPointButtonView();
     render(this.#newPointButtonComponent, this.#btnContainer);
     this.#newPointButtonComponent.setClickHandler(this.#handleNewPointButtonClick);
+    // if (this.#offersModel.offers.length === 0 || this.#destinationsModel.destinations.length === 0) {
+    //   this.#newPointButtonComponent.element.disabled = true;
+    // }
   };
 
   #handleNewPointFormClose = () => {
