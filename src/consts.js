@@ -31,10 +31,6 @@ const SortType = {
   OFFER: 'offer',
 };
 
-const DisabledSortTypes = [SortType.EVENT, SortType.OFFER];
-
-const StartCheckedSortType = SortType.DAY;
-
 const SortTypeDescriptions = {
   [SortType.DAY]: 'Day',
   [SortType.EVENT]: 'Event',
@@ -42,6 +38,10 @@ const SortTypeDescriptions = {
   [SortType.PRICE]: 'Price',
   [SortType.OFFER]: 'Offer',
 };
+
+const DISABLED_SORT_TYPES = [SortType.EVENT, SortType.OFFER];
+
+const START_CHECKED_SORT_TYPE = SortType.DAY;
 
 const NoPointsTextType = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first point',
@@ -85,5 +85,5 @@ const LimitTime = {
   UPPER_LIMIT: 1000,
 };
 
-export { UserAction, UpdateType, FilterType, SortType, NoPointsTextType, DisabledSortTypes, StartCheckedSortType,
+export { UserAction, UpdateType, FilterType, SortType, NoPointsTextType, DISABLED_SORT_TYPES, START_CHECKED_SORT_TYPE,
   SortTypeDescriptions, FilterTypeDescriptions, PointTypes, PointTypesDescriptions, ApiServiceResponseMethod, LimitTime };

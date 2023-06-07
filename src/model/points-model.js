@@ -10,6 +10,10 @@ export default class PointsModel extends Observable{
     this.#pointApiService = pointApiService;
   }
 
+  get points() {
+    return this.#points;
+  }
+
   init = async () => {
     try {
       const points = await this.#pointApiService.points;
@@ -19,10 +23,6 @@ export default class PointsModel extends Observable{
     }
     this._notify(UpdateType.INIT);
   };
-
-  get points() {
-    return this.#points;
-  }
 
   updatePoint = async (updateType, update) => {
     const index = this.#points.findIndex((point) => point.id === update.id);

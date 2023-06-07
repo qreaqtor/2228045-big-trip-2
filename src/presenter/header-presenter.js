@@ -26,11 +26,11 @@ export default class HeaderPresenter {
   #menuComponent = null;
   #infoComponent = null;
 
-  constructor({container, newEventClick, newEventCancel, pointsModel, filtersModel, destinationsModel, offersModel}) {
-    this.#btnContainer = container;
-    this.#filterContainer = container.querySelector('.trip-controls__filters');
-    this.#menuContainer = container.querySelector('.trip-controls__navigation');
-    this.#infoContainer = container.querySelector('.trip-main__trip-info');
+  constructor({btnContainer, filterContainer, menuContainer, infoContainer, newEventClick, newEventCancel, pointsModel, filtersModel, destinationsModel, offersModel}) {
+    this.#btnContainer = btnContainer;
+    this.#filterContainer = filterContainer;
+    this.#menuContainer = menuContainer;
+    this.#infoContainer = infoContainer;
     this.#openCreatePointForm = newEventClick;
     this.#renderEmptyPointsList = newEventCancel;
     this.#filtersModel = filtersModel;
