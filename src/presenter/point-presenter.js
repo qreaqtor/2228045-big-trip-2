@@ -91,14 +91,6 @@ export default class PointPresenter {
     this.#formEditComponent.shake(this.#resetFormState);
   };
 
-  #resetFormState = () => {
-    this.#formEditComponent.updateElement({
-      isDisabled: false,
-      isSaving: false,
-      isDeleting: false,
-    });
-  };
-
   resetViewToDefault = () => {
     if(this.#mode === Mode.EDITING) {
       this.#formEditComponent.reset(this.#point);
@@ -109,6 +101,14 @@ export default class PointPresenter {
   destroy = () => {
     remove(this.#pointComponent);
     remove(this.#formEditComponent);
+  };
+
+  #resetFormState = () => {
+    this.#formEditComponent.updateElement({
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    });
   };
 
   #onEscKeyDown = (evt) => {

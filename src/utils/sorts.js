@@ -1,20 +1,20 @@
 import dayjs from 'dayjs';
 import { SortType } from '../consts';
 
-const pointDayComparer = (firstPoint, secondPoint) => dayjs(firstPoint.dateFrom).diff(dayjs(secondPoint.dateFrom));
+const pointDayCompare = (firstPoint, secondPoint) => dayjs(firstPoint.dateFrom).diff(dayjs(secondPoint.dateFrom));
 
-const pointPriceComparer = (firstPoint, secondPoint) => secondPoint.basePrice - firstPoint.basePrice;
+const pointPriceCompare = (firstPoint, secondPoint) => secondPoint.basePrice - firstPoint.basePrice;
 
-const pointTimeComparer = (firstPoint, secondPoint) => {
+const pointTimeCompare = (firstPoint, secondPoint) => {
   const timePointA = dayjs(firstPoint.dateTo).diff(dayjs(firstPoint.dateFrom));
   const timePointB = dayjs(secondPoint.dateTo).diff(dayjs(secondPoint.dateFrom));
   return timePointB - timePointA;
 };
 
 const SortComparers = {
-  [SortType.DAY]: pointDayComparer,
-  [SortType.PRICE]: pointPriceComparer,
-  [SortType.TIME]: pointTimeComparer
+  [SortType.DAY]: pointDayCompare,
+  [SortType.PRICE]: pointPriceCompare,
+  [SortType.TIME]: pointTimeCompare
 };
 
 export { SortComparers };

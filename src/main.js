@@ -28,7 +28,10 @@ const eventsPresenter = new EventsPresenter({
 });
 
 const headerPresenter = new HeaderPresenter({
-  container: siteHeaderElement,
+  btnContainer: siteHeaderElement,
+  filterContainer: siteHeaderElement.querySelector('.trip-controls__filters'),
+  menuContainer: siteHeaderElement.querySelector('.trip-controls__navigation'),
+  infoContainer: siteHeaderElement.querySelector('.trip-main__trip-info'),
   newEventClick: eventsPresenter.openCreatePointForm,
   newEventCancel: eventsPresenter.showNoPointsDescription,
   pointsModel: pointsModel,
